@@ -153,7 +153,7 @@ resource "null_resource" "process_folder_result" {
     version = var.folder_version
   }
   provisioner "local-exec" {
-    command = "python extract_id.py"
+    command = "python3 extract_id.py"
   }
 }
 
