@@ -65,7 +65,7 @@ module "elb_module" {
   depends_on = [time_sleep.wait_for_minutes]
   for_each   = toset(local.create_elb_source ? ["elb_module"] : [])
 
-  source = "SumoLogic/sumo-logic-integrations/sumologic//aws/elb"
+  source = "github.com/OrigamiRisk/sumo-logic-integrations/sumologic//aws/elb"
 
   create_collector          = false
   sumologic_organization_id = var.sumologic_organization_id
@@ -244,7 +244,7 @@ module "kinesis_firehose_for_logs_module" {
   depends_on = [time_sleep.wait_for_minutes]
   for_each   = toset(local.create_kf_logs_source ? ["kinesis_firehose_for_logs_module"] : [])
 
-  source = "SumoLogic/sumo-logic-integrations/sumologic//aws/kinesisfirehoseforlogs"
+  source = "github.com/OrigamiRisk/sumo-logic-integrations/sumologic//aws/kinesisfirehoseforlogs"
 
   create_collector = false
 
