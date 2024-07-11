@@ -26,7 +26,8 @@ module "cloudtrail_module" {
   depends_on = [time_sleep.wait_for_minutes]
   for_each   = toset(local.create_cloudtrail_source ? ["cloudtrail_module"] : [])
 
-  source = "SumoLogic/sumo-logic-integrations/sumologic//aws/cloudtrail"
+  source = "github.com/OrigamiRisk/terraform-sumologic-sumo-logic-integrations//aws/cloudtrail"
+  # source = "../../../terraform-sumologic-sumo-logic-integrations/aws/cloudtrail"
 
   create_collector          = false
   create_trail              = var.cloudtrail_source_details.bucket_details.create_bucket ? true : false
@@ -58,6 +59,10 @@ module "cloudtrail_module" {
       sns_topic_arn    = var.cloudtrail_source_details.bucket_details.create_bucket ? aws_sns_topic.sns_topic["sns_topic"].arn : ""
     }
   }
+
+  use_iam_user_auth   = local.create_iam_user ? true : false
+  iam_user_access_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].id : ""
+  iam_user_secret_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].secret : ""
 }
 
 #ALB module
@@ -66,6 +71,7 @@ module "elb_module" {
   for_each   = toset(local.create_elb_source ? ["elb_module"] : [])
 
   source = "github.com/OrigamiRisk/terraform-sumologic-sumo-logic-integrations//aws/elb"
+  # source = "../../../terraform-sumologic-sumo-logic-integrations/aws/elb"
 
   create_collector          = false
   sumologic_organization_id = var.sumologic_organization_id
@@ -103,6 +109,10 @@ module "elb_module" {
     filter                 = "'Type': 'application'|'type': 'application'"
     remove_on_delete_stack = true
   }
+
+  use_iam_user_auth   = local.create_iam_user ? true : false
+  iam_user_access_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].id : ""
+  iam_user_secret_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].secret : ""
 }
 
 #CLB module
@@ -110,7 +120,8 @@ module "classic_lb_module" {
   depends_on = [time_sleep.wait_for_minutes]
   for_each   = toset(local.create_classic_lb_source ? ["classic_lb_module"] : [])
 
-  source = "SumoLogic/sumo-logic-integrations/sumologic//aws/elasticloadbalancing"
+  source = "github.com/OrigamiRisk/terraform-sumologic-sumo-logic-integrations//aws/elasticloadbalancing"
+  # source = "../../../terraform-sumologic-sumo-logic-integrations/aws/elasticloadbalancing"
 
   create_collector          = false
   sumologic_organization_id = var.sumologic_organization_id
@@ -149,13 +160,18 @@ module "classic_lb_module" {
     filter                 = "'apiVersion': '2012-06-01'"
     remove_on_delete_stack = true
   }
+
+  use_iam_user_auth   = local.create_iam_user ? true : false
+  iam_user_access_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].id : ""
+  iam_user_secret_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].secret : ""
 }
 
 module "cloudwatch_metrics_source_module" {
   depends_on = [time_sleep.wait_for_minutes]
   for_each   = local.create_cw_metrics_source ? toset(var.cloudwatch_metrics_source_details.limit_to_namespaces) : []
 
-  source = "SumoLogic/sumo-logic-integrations/sumologic//aws/cloudwatchmetrics"
+  source = "github.com/OrigamiRisk/terraform-sumologic-sumo-logic-integrations//aws/cloudwatchmetrics"
+  # source = "../../../terraform-sumologic-sumo-logic-integrations/aws/cloudwatchmetrics"
 
   create_collector          = false
   sumologic_organization_id = var.sumologic_organization_id
@@ -177,13 +193,18 @@ module "cloudwatch_metrics_source_module" {
       iam_role_arn    = local.create_iam_role ? aws_iam_role.sumologic_iam_role["sumologic_iam_role"].arn : var.existing_iam_details.iam_role_arn
     }
   }
+
+  use_iam_user_auth   = local.create_iam_user ? true : false
+  iam_user_access_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].id : ""
+  iam_user_secret_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].secret : ""
 }
 
 module "kinesis_firehose_for_metrics_source_module" {
   depends_on = [time_sleep.wait_for_minutes]
   for_each   = toset(local.create_kf_metrics_source ? ["kinesis_firehose_for_metrics_source_module"] : [])
 
-  source = "SumoLogic/sumo-logic-integrations/sumologic//aws/kinesisfirehoseformetrics"
+  source = "github.com/OrigamiRisk/terraform-sumologic-sumo-logic-integrations//aws/kinesisfirehoseformetrics"
+  # source = "../../../terraform-sumologic-sumo-logic-integrations/aws/kinesisfirehoseformetrics"
 
   create_collector          = false
   sumologic_organization_id = var.sumologic_organization_id
@@ -208,13 +229,18 @@ module "kinesis_firehose_for_metrics_source_module" {
     bucket_name          = var.cloudwatch_metrics_source_details.bucket_details.create_bucket ? aws_s3_bucket.s3_bucket["s3_bucket"].bucket : var.cloudwatch_metrics_source_details.bucket_details.bucket_name
     force_destroy_bucket = false
   }
+
+  use_iam_user_auth   = local.create_iam_user ? true : false
+  iam_user_access_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].id : ""
+  iam_user_secret_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].secret : ""
 }
 
 module "cloudwatch_logs_lambda_log_forwarder_module" {
   depends_on = [time_sleep.wait_for_minutes]
   for_each   = toset(local.create_llf_logs_source ? ["cloudwatch_logs_lambda_log_forwarder_module"] : [])
 
-  source = "SumoLogic/sumo-logic-integrations/sumologic//aws/cloudwatchlogsforwarder"
+  source = "github.com/OrigamiRisk/terraform-sumologic-sumo-logic-integrations//aws/cloudwatchlogsforwarder"
+  # source = "../../../terraform-sumologic-sumo-logic-integrations/aws/cloudwatchlogsforwarder"
 
   create_collector = false
 
@@ -273,7 +299,8 @@ module "root_cause_sources_module" {
   depends_on = [time_sleep.wait_for_minutes]
   for_each   = toset(local.create_root_cause_source ? ["root_cause_sources_module"] : [])
 
-  source = "SumoLogic/sumo-logic-integrations/sumologic//aws/rootcause"
+  source = "github.com/OrigamiRisk/terraform-sumologic-sumo-logic-integrations//aws/rootcause"
+  # source = "../../../terraform-sumologic-sumo-logic-integrations/aws/rootcause"
 
   create_collector          = false
   sumologic_organization_id = var.sumologic_organization_id
@@ -310,4 +337,8 @@ module "root_cause_sources_module" {
     sumo_account_id  = local.sumo_account_id
     fields           = var.xray_source_details.fields
   }
+
+  use_iam_user_auth   = local.create_iam_user ? true : false
+  iam_user_access_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].id : ""
+  iam_user_secret_key = local.create_iam_user ? aws_iam_access_key.sumologic_iam_access_key["sumologic_iam_access_key"].secret : ""
 }

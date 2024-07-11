@@ -1,0 +1,12 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "AWS": "arn:${AWS_PARTITION}:iam::${AWS_ACCOUNT_ID}:${SUMO_IAM_USER}"
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
