@@ -4,7 +4,7 @@
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "AWS": "arn:${AWS_PARTITION}:iam::${AWS_ACCOUNT_ID}:${SUMO_IAM_USER}"
+        "AWS": "arn:${AWS_PARTITION}:iam::${AWS_ACCOUNT_ID}:user/${SUMO_IAM_USER}"
       },
       "Effect": "Allow"
     }
