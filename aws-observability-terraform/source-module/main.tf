@@ -104,7 +104,7 @@ module "elb_module" {
   }
 
   auto_enable_access_logs = "None"
-  app_semantic_version    = "1.0.7"
+  app_semantic_version    = "1.0.14"
   auto_enable_access_logs_options = {
     filter                 = "'Type': 'application'|'type': 'application'"
     remove_on_delete_stack = true
@@ -153,7 +153,7 @@ module "classic_lb_module" {
     }
   }
   auto_enable_access_logs = var.auto_enable_classic_lb_access_logs
-  app_semantic_version    = "1.0.7"
+  app_semantic_version    = "1.0.14"
   auto_enable_access_logs_options = {
     bucket_prefix          = local.auto_classic_lb_path_exp
     auto_enable_logging    = "ELB"
@@ -260,7 +260,7 @@ module "cloudwatch_logs_lambda_log_forwarder_module" {
   }
 
   auto_enable_logs_subscription = var.auto_enable_logs_subscription
-  app_semantic_version          = "1.0.9"
+  app_semantic_version          = "1.0.12"
   auto_enable_logs_subscription_options = {
     filter = var.auto_enable_logs_subscription_options.filter
   }
@@ -289,7 +289,7 @@ module "kinesis_firehose_for_logs_module" {
   }
 
   auto_enable_logs_subscription = "None"
-  app_semantic_version          = "1.0.9"
+  app_semantic_version          = "1.0.12"
   auto_enable_logs_subscription_options = {
     filter = var.auto_enable_logs_subscription_options.filter
   }
