@@ -10,8 +10,8 @@
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Validate Sumo Logic environment/deployment.
-if ! [[ "$SUMOLOGIC_ENV" =~ ^(au|ca|de|eu|jp|us2|in|fed|us1)$ ]]; then
-    echo "$SUMOLOGIC_ENV is invalid Sumo Logic deployment. For SUMOLOGIC_ENV, provide one from list : au, ca, de, eu, jp, us2, in, fed or us1. For more information on Sumo Logic deployments visit https://help.sumologic.com/APIs/General-API-Information/Sumo-Logic-Endpoints-and-Firewall-Security"
+if ! [[ "$SUMOLOGIC_ENV" =~ ^(au|ca|de|eu|jp|us2|in|fed|us1|kr)$ ]]; then
+    echo "$SUMOLOGIC_ENV is invalid Sumo Logic deployment. For SUMOLOGIC_ENV, provide one from list : au, ca, de, eu, fed, in, jp, kr, us1 or us2. For more information on Sumo Logic deployments visit https://help.sumologic.com/APIs/General-API-Information/Sumo-Logic-Endpoints-and-Firewall-Security"
     exit 1
 fi
 
@@ -23,9 +23,9 @@ else
 fi
 
 # awso_list contains fields required for AWS Obervablity Solution. Update the list if new field is added to the solution.
-declare -ra awso_list=(account accountid apiname cacheclusterid clustername dbclusteridentifier dbidentifier dbinstanceidentifier functionname instanceid loadbalancer loadbalancername namespace networkloadbalancer region tablename topicname queuename)
+declare -ra awso_list=(account accountid apiid apiname cacheclusterid clustername dbclusteridentifier dbidentifier dbinstanceidentifier functionname instanceid loadbalancer loadbalancername namespace networkloadbalancer region tablename topicname queuename)
 # awso_fer_list contains FERs required for AWS Obervablity Solution. Update the list if new FER is added to the solution.
-declare -ra awso_fer_list=(AwsObservabilityAlbAccessLogsFER AwsObservabilityApiGatewayCloudTrailLogsFER AwsObservabilityDynamoDBCloudTrailLogsFER AwsObservabilityEC2CloudTrailLogsFER AwsObservabilityECSCloudTrailLogsFER AwsObservabilityElastiCacheCloudTrailLogsFER AwsObservabilityElbAccessLogsFER AwsObservabilityFieldExtractionRule AwsObservabilityGenericCloudWatchLogsFER AwsObservabilityLambdaCloudWatchLogsFER AwsObservabilityRdsCloudTrailLogsFER AwsObservabilitySNSCloudTrailLogsFER AwsObservabilitySQSCloudTrailLogsFER)
+declare -ra awso_fer_list=(AwsObservabilityAlbAccessLogsFER AwsObservabilityApiGatewayAccessLogsFER AwsObservabilityApiGatewayCloudTrailLogsFER AwsObservabilityDynamoDBCloudTrailLogsFER AwsObservabilityEC2CloudTrailLogsFER AwsObservabilityECSCloudTrailLogsFER AwsObservabilityElastiCacheCloudTrailLogsFER AwsObservabilityElbAccessLogsFER AwsObservabilityFieldExtractionRule AwsObservabilityGenericCloudWatchLogsFER AwsObservabilityLambdaCloudWatchLogsFER AwsObservabilityRdsCloudTrailLogsFER AwsObservabilitySNSCloudTrailLogsFER AwsObservabilitySQSCloudTrailLogsFER)
 
 function get_remaining_fields() {
     local RESPONSE

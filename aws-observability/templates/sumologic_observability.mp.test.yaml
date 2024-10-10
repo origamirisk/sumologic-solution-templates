@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: "Version - v2.8.0. Note: Before deploying this template, please select the appropriate region. This CloudFormation template will automate the setup of the AWS Observability Solution. For more information on each parameter, please see the AWS Observability Setup Guide: https://help.sumologic.com/Observability_Solution/AWS_Observability_Solution/01_Deploy_and_Use_AWS_Observability/05_Deploy_AWS_Observability"
+Description: "Version - v2.10.0. Note: Before deploying this template, please select the appropriate region. This CloudFormation template will automate the setup of the AWS Observability Solution. For more information on each parameter, please see the AWS Observability Setup Guide: https://help.sumologic.com/Observability_Solution/AWS_Observability_Solution/01_Deploy_and_Use_AWS_Observability/05_Deploy_AWS_Observability"
 
 Metadata:
   'AWS::CloudFormation::Interface':
@@ -500,7 +500,7 @@ Mappings:
   CommonData:
     NestedTemplate:
       BucketName: "sumologic-appdev-aws-sam-apps"
-      Version: "v2.8.0"
+      Version: "v2.10.0"
     CollectorDetails:
       SumoLogicAccountID: 246946804217
       CollectorNamePrefix: "aws-observability"
@@ -739,10 +739,10 @@ Resources:
         ALBAutoEnableS3LogsOptions: !Ref Section5aAutoEnableS3LogsALBResourcesOptions
         ALBS3LogsBucketName: !If [create_alb_bucket, !GetAtt CreateCommonResources.Outputs.BucketName, !Ref Section5dALBS3LogsBucketName]
         AutoSubscribeLogGroups: !If [create_kf_logs_source, "Yes", !If [ create_cw_logs_source, "Yes", "No" ] ]
-        AutoSubscribeLogGroupsOptions: !Ref Section7cAutoSubscribeLogGroupsOptions
+        AutoSubscribeLogGroupsLambdaOptions: !Ref Section7cAutoSubscribeLogGroupsOptions
         AutoSubscribeDestinationARNType: !If [create_kf_logs_source, "Kinesis",  "Lambda" ]
-        AutoSubscribeDestinationARNValue: !If [create_kf_logs_source, !GetAtt CreateCommonResources.Outputs.KinesisLogsDeliveryStreamARN, !If [ create_cw_logs_source, !GetAtt CreateCommonResources.Outputs.CloudWatchLambdaARN, "" ] ]
-        AutoSubscribeLogGroupPattern: !Ref Section7dAutoSubscribeLogGroupPattern
+        AutoSubscribeDestinationARN: !If [create_kf_logs_source, !GetAtt CreateCommonResources.Outputs.KinesisLogsDeliveryStreamARN, !If [ create_cw_logs_source, !GetAtt CreateCommonResources.Outputs.CloudWatchLambdaARN, "" ] ]
+        AutoSubscribeLambdaLogGroupPattern: !Ref Section7dAutoSubscribeLogGroupPattern
         AutoSubscribeRoleArn: !If [create_kf_logs_source, !GetAtt CreateCommonResources.Outputs.KinesisLogsRoleARN,  "" ]
         ELBAutoEnableS3Logs: !If [auto_enable_s3_logs_elb, "Yes", "No"]
         ELBAutoEnableS3LogsOptions: !Ref Section9aAutoEnableS3LogsELBResourcesOptions
